@@ -1,6 +1,6 @@
-# Muni is the python telegram bot framework 
+# Muni Framework
+## Muni Framework is the python hight level library to building telegram bots easier and more enjoyable.
 
-## How you can start?
-Just run `pip3 install muni` to install package.
+muni/core - contain core files: decorators, controllers, models, filters and other.
 
-Run `ni init superbot` to initialize new bot.
+muni/cli - contain cli application to fast working with this framework.
