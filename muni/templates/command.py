@@ -1,4 +1,4 @@
-from muni.core import command
+from muni.core.controllers import command
 
 
 @command

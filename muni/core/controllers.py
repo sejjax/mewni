@@ -1,8 +1,12 @@
 from typing import Callable
 import schedule
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Union
 from functools import wraps
+from .constants import MUNI_META
+from .types import MuniCallbackMeta, MuniCommand, MuniScheduler
+from .utils.muni_meta import set_muni_meta
+from .utils.lambda_value import lambda_value
 # make command
 
 
@@ -10,8 +14,8 @@ def command(name: Optional[str] = None, description: Optional[str] = None):
     def decorate(func: Callable):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            func()
-        wrapper.__command__ = True
+            func(*args, **kwargs)
+        set_muni_meta(wrapper, MuniCommand(name if name is str else func.__name__, description))
         return wrapper
     return decorate
 
@@ -61,11 +65,9 @@ def every(*kwargs, at: Optional[str] = None):
                 prepare_job = prepare_job.at(time)
             job = prepare_job.do(func)
             return job
-        wrapper.__every__ = True
+        set_muni_meta(wrapper, MuniScheduler())
         return wrapper
     return decorate
 
 
-# on message
-def message():
-    pass
+

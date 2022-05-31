@@ -1,7 +1,6 @@
 from muni.core.config import Config
 
 
-# EnvironmentConfig - config used .env file
 class AppConfig(Config):
     BOT_NAME: str
     BOT_TOKEN: str

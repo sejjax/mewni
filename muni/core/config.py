@@ -2,9 +2,16 @@ import os
 import environs
 from .utils.get_class_fields import get_class_fields
 from typing import get_args
+from abc import ABCMeta
 
 
 class Config:
+    __metaclass__ = ABCMeta
+
+    BOT_NAME: str
+    BOT_TOKEN: str
+    ADMINS: list[int]
+
     def load_config(self, path_to_dot_env: str):
         env = environs.Env()
         env.read_env(path_to_dot_env)
