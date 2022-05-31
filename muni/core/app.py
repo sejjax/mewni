@@ -40,10 +40,6 @@ class Muni:
         self.config.load_config(path_to_config_file)
 
     def register_controllers(self):
-        base_path = os.getcwd()
+        functions = self.autoloader.load_functions('bot/controllers', recursively=True)
+        print('')
 
-        loader = ModuleLoader(base_path)
-        functions = loader.load_functions('bot/controllers/start')
-        for function in functions:
-            print(function().__name__)
-            # TODO: Wrote autoloader for config, controllers and models
