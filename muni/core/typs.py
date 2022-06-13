@@ -2,8 +2,15 @@ from typing import Optional, Union
 from dataclasses import dataclass
 
 
-@dataclass
 class MuniScheduler:
+    pass
+
+
+class MuniOnStartup:
+    pass
+
+
+class MuniOnStop:
     pass
 
 
@@ -13,7 +20,7 @@ class MuniCommand:
     value: Optional[str]
 
 
-MuniCallbackMetaTypes = Union[MuniCommand, MuniScheduler]
+MuniCallbackMetaTypes = Union[MuniCommand, MuniScheduler, MuniOnStartup, MuniOnStop]
 
 
 @dataclass

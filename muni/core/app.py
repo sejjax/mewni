@@ -52,6 +52,7 @@ class Muni:
     def run(self):
         async def on_startup(_):
             asyncio.create_task(start_scheduling())
+
         executor.start_polling(self.dp, skip_updates=self.skip_updates, on_startup=on_startup)
 
     def load_config(self):
@@ -77,8 +78,11 @@ class Muni:
 
     def register_controllers(self):
         functions = self.autoloader.load_functions('bot/controllers', recursively=True)
-        commands = list(filter(lambda item: has_muni_meta(item) and isinstance(get_muni_meta(item).value, MuniCommand), functions))
-        schedulers = list(filter(lambda item: has_muni_meta(item) and isinstance(get_muni_meta(item).value, MuniScheduler), functions))
+        commands = list(
+            filter(lambda item: has_muni_meta(item) and isinstance(get_muni_meta(item).value, MuniCommand), functions))
+        schedulers = list(
+            filter(lambda item: has_muni_meta(item) and isinstance(get_muni_meta(item).value, MuniScheduler),
+                   functions))
 
         async def help_command(message):
             await self.bot.send_message(message.from_user.id, generate_help(commands))
@@ -94,3 +98,15 @@ class Muni:
 
 def get_app():
     return Muni()
+
+
+def get_config():
+    return get_app().config
+
+
+def get_dp():
+    return get_app().dp
+
+
+def get_bot():
+    return get_app().bot
