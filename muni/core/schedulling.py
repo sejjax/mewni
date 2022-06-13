@@ -1,5 +1,3 @@
-import asyncio
-
 from aioschedule import run_pending
 from asyncio import sleep
 

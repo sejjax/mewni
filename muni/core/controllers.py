@@ -12,7 +12,7 @@ from .utils.isasync import is_async
 # make command
 
 
-def command(name: Optional[str] = None, description: Optional[str] = None):
+def command(name: Optional[str] = None, description: Optional[str] = 'Placeholder description'):
     def decorate(func: Callable):
         @wraps(func)
         async def wrapper(*args, **kwargs):
@@ -23,7 +23,8 @@ def command(name: Optional[str] = None, description: Optional[str] = None):
 
         set_muni_meta(wrapper, MuniCommand(name if name is str else func.__name__, description))
         return wrapper
-
+    if callable(name):
+        return decorate(name)
     return decorate
 
 

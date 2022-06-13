@@ -18,7 +18,7 @@ from .schedulling import start_scheduling
 # Entry point
 def generate_help(commands: list[MuniCallbackMeta]) -> str:
     help_ = '/help - Show helpful information\n'
-    for command in commands:
+    for command in reversed(commands):
         meta = get_muni_meta(command)
         help_ += f'/{meta.value.command} - {meta.value.value}\n'
 
