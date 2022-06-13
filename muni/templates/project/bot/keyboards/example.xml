@@ -1,0 +1,13 @@
+<template>
+    <keyboard @if="is_show">
+        <button>1</button>
+        <button>2</button>
+        <button>Other</button>
+        <button>Another</button>
+        <input bind="name" title="Set Name"/>
+        <input bind="another" title="Set Name"/>
+    </keyboard>
+    <keyboard @else>
+
+    </keyboard>
+</template>

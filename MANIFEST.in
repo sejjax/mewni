@@ -1,1 +1,1 @@
-recursive-include muni/templates *
+recursive-include muni *

@@ -1,7 +1,4 @@
-from muni.core.config import Config
-
-
-class AppConfig(Config):
+class AppConfig:
     BOT_NAME: str
     BOT_TOKEN: str
     ADMINS: list[int]

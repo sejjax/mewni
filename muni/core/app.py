@@ -3,17 +3,28 @@ from pathlib import Path
 
 from aiogram.types import BotCommand
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
+from schedule import run_pending
 
 from .utils.singleton import singleton
 from aiogram import Dispatcher, Bot, executor
 from .autoloader import AutoLoader
 from .utils.muni_meta import get_muni_meta, has_muni_meta
-from .types import MuniCallbackMeta
+from .typs import MuniCallbackMeta, MuniScheduler, MuniCommand
 from .config import Config
 import asyncio
+from .schedulling import start_scheduling
 
 
 # Entry point
+def generate_help(commands: list[MuniCallbackMeta]) -> str:
+    help_ = '/help - Show helpful information\n'
+    for command in commands:
+        meta = get_muni_meta(command)
+        help_ += f'/{meta.value.command} - {meta.value.value}\n'
+
+    return help_
+
+
 @singleton
 class Muni:
     config: Config
@@ -39,11 +50,16 @@ class Muni:
         self.register_controllers()
 
     def run(self):
-        executor.start_polling(self.dp, skip_updates=self.skip_updates)
+        async def on_startup(_):
+            asyncio.create_task(start_scheduling())
+        executor.start_polling(self.dp, skip_updates=self.skip_updates, on_startup=on_startup)
 
     def load_config(self):
         app_config_module_path = 'bot/config/app.py'
-        AppConfig = self.autoloader.load_class(app_config_module_path, 'AppConfig')
+        LoadedAppConfig = self.autoloader.load_class(app_config_module_path, 'AppConfig')
+
+        class AppConfig(LoadedAppConfig, Config):
+            pass
 
         working_dir = os.getcwd()
         relative_file_path = '.env'
@@ -51,13 +67,6 @@ class Muni:
 
         self.config = AppConfig()
         self.config.load_config(str(path_to_config_file))
-
-    def generate_help(self, commands: list[MuniCallbackMeta]) -> help:
-        help = ''
-        for command in commands:
-            meta = get_muni_meta(command)
-            help += f'/{meta.value.command} - {meta.value.value}\n'
-        return help
 
     def set_commands(self, commands):
         _commands = [BotCommand(
@@ -68,16 +77,19 @@ class Muni:
 
     def register_controllers(self):
         functions = self.autoloader.load_functions('bot/controllers', recursively=True)
-        commands = list(filter(lambda item: has_muni_meta(item), functions))
+        commands = list(filter(lambda item: has_muni_meta(item) and isinstance(get_muni_meta(item).value, MuniCommand), functions))
+        schedulers = list(filter(lambda item: has_muni_meta(item) and isinstance(get_muni_meta(item).value, MuniScheduler), functions))
+
+        async def help_command(message):
+            await self.bot.send_message(message.from_user.id, generate_help(commands))
+
+        self.dp.register_message_handler(help_command, commands=['help'])
         for command in commands:
             self.dp.register_message_handler(command, commands=[get_muni_meta(command).value.command])
         self.set_commands(commands)
 
-        async def help(message):
-            await self.bot.send_message(message.from_user.id, self.generate_help(commands))
-
-        self.dp.register_message_handler(help, commands=['help'])
-        self.set_commands(commands)
+        for schedule in schedulers:
+            schedule()
 
 
 def get_app():
