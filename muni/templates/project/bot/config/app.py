@@ -10,3 +10,5 @@ class AppConfig:
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: str
+
+config = AppConfig

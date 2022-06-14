@@ -1,10 +1,11 @@
+import inspect
 from enum import Enum
 from typing import Callable
 import aioschedule as schedule
 from dataclasses import dataclass
 from typing import Optional
 from functools import wraps
-from .typs import MuniCommand, MuniScheduler
+from .types import MuniCommand, MuniScheduler
 from .utils.muni_meta import set_muni_meta
 from .utils.isasync import is_async
 
@@ -17,12 +18,13 @@ def command(name: Optional[str] = None, description: Optional[str] = 'Placeholde
         @wraps(func)
         async def wrapper(*args, **kwargs):
             if is_async(func):
-                await func(*args, **kwargs)
+                await func()
             else:
-                func(*args, **kwargs)
+                func()
 
         set_muni_meta(wrapper, MuniCommand(name if name is str else func.__name__, description))
         return wrapper
+
     if callable(name):
         return decorate(name)
     return decorate

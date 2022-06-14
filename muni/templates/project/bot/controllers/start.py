@@ -1,15 +1,18 @@
-from muni.core.controllers import command, every, SECOND
-from muni.core.app import get_app, get_config
-from aiogram.types.message import Message
-
-turn = False
-
-@command
-async def start(message: Message):
-    config = get_config()
-    await message.answer(f'Hello World {config.BOT_NAME}')
+from muni.core import command, every, send_message, answer, config, SECOND
 
 
 @command
-async def click(message: Message):
-    await message.answer('Click on me')
+async def start():
+    await answer(f'Application started at {config().APP_HOST}:{config().APP_PORT}')
+
+
+@command
+async def click():
+    for admin in config().ADMINS:
+        await send_message(admin, 'Hello, bot started')
+
+
+@every(SECOND)
+async def notify():
+    for admin in config().ADMINS:
+        await send_message(str(admin), 'Hello, bot started')

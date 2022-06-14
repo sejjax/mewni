@@ -1,5 +1,5 @@
 from muni.core.constants import MUNI_META
-from muni.core.typs import MuniCallbackMeta, MuniCallbackMetaTypes
+from muni.core.types import MuniCallbackMeta, MuniCallbackMetaTypes
 
 
 def set_muni_meta(obj, meta: MuniCallbackMetaTypes):

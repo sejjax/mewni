@@ -3,16 +3,17 @@ from pathlib import Path
 
 from aiogram.types import BotCommand
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
-from schedule import run_pending
 
 from .utils.singleton import singleton
 from aiogram import Dispatcher, Bot, executor
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from .autoloader import AutoLoader
 from .utils.muni_meta import get_muni_meta, has_muni_meta
-from .typs import MuniCallbackMeta, MuniScheduler, MuniCommand
+from .types import MuniCallbackMeta, MuniScheduler, MuniCommand
 from .config import Config
 import asyncio
 from .schedulling import start_scheduling
+from .ctx import OpenContextMiddleware, CloseContextMiddleware
 
 
 # Entry point
@@ -41,11 +42,16 @@ class Muni:
         self.load_config()
 
         self.bot = Bot(self.config.BOT_TOKEN)
-        self.dp = Dispatcher(self.bot)
+        self.storage = MemoryStorage()
+        self.dp = Dispatcher(self.bot, storage=self.storage)
+
+        self.dp.setup_middleware(OpenContextMiddleware())
 
         LOCALES_DIR = Path(os.getcwd()).joinpath('bot/locales')
         self.i18n = I18nMiddleware(self.config.BOT_NAME, LOCALES_DIR)
         self.dp.setup_middleware(self.i18n)
+
+        self.dp.setup_middleware(CloseContextMiddleware())
 
         self.register_controllers()
 
