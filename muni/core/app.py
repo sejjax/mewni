@@ -5,7 +5,7 @@ import asyncio
 from aiogram.types import BotCommand
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
 from aiogram import Dispatcher, Bot, executor
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.contrib.fsm_storage.memory import MemoryStorage as AiogramMemoryStorage
 
 from .utils.singleton import singleton
 from .autoloader import AutoLoader
@@ -14,7 +14,8 @@ from .types import MuniCallbackMeta, MuniScheduler, MuniCommand
 from .config import Config
 from .schedulling import start_scheduling
 from .ctx import OpenContextMiddleware, CloseContextMiddleware
-from .ask_chat_notificator import AskChatNotificator
+from .ask_data_middleware import AskDataMiddleware
+from .store import Storage, MemoryStorage, UserStore
 
 
 def generate_help(commands: list[MuniCallbackMeta]) -> str:
@@ -32,31 +33,34 @@ class Muni:
     bot: Bot
     dp: Dispatcher
     autoloader: AutoLoader
+    storage: Storage
+    user_stores: list[UserStore] = []
 
     i18n: I18nMiddleware
-    ask_chat_notificator: AskChatNotificator
+    ask_data_middleware: AskDataMiddleware
 
-    def __init__(self, skip_updates=False):
+    def __init__(self, skip_updates=False, storage: Storage = MemoryStorage()):
+        self.storage = storage
         self.skip_updates = skip_updates
         self.autoloader = AutoLoader()
 
         self.load_config()
 
         self.bot = Bot(self.config.BOT_TOKEN)
-        self.storage = MemoryStorage()
-        self.dp = Dispatcher(self.bot, storage=self.storage)
-
-        self.ask_chat_notificator = AskChatNotificator(self.dp)
+        aiogram_storage = AiogramMemoryStorage()
+        self.dp = Dispatcher(self.bot, storage=aiogram_storage)
 
         self.dp.setup_middleware(OpenContextMiddleware())
+        self.ask_data_middleware = AskDataMiddleware(self.dp)
 
         LOCALES_DIR = Path(os.getcwd()).joinpath('bot/locales')
         self.i18n = I18nMiddleware(self.config.BOT_NAME, LOCALES_DIR)
         self.dp.setup_middleware(self.i18n)
+        self.dp.setup_middleware(AskDataMiddleware(self.dp))
 
         self.register_controllers()
-        self.ask_chat_notificator.register_handler()
         self.dp.setup_middleware(CloseContextMiddleware())
+        self.load_user_stores()
 
     def run(self):
         async def on_startup(_):
@@ -100,6 +104,13 @@ class Muni:
 
         for schedule in schedulers:
             schedule()
+
+    def load_user_stores(self):
+        classes = self.autoloader.load_classes('bot/stores', recursive=True)
+        for class_ in classes:
+            if UserStore in class_.__bases__:
+                store = class_()
+                self.user_stores.append(store)
 
 
 def get_app() -> Muni:

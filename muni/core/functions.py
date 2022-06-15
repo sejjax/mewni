@@ -1,10 +1,8 @@
 import typing
-from dataclasses import dataclass
 
 from aiogram.types import base
 from aiogram import types
 import asyncio
-from pyee import EventEmitter
 
 from .app import get_bot, get_app
 from .ctx import message
@@ -74,11 +72,12 @@ async def ask_chat(chat_id, text) -> types.Message:
     future: asyncio.Future[types.Message] = asyncio.get_event_loop().create_future()
 
     app = get_app()
-    app.ask_chat_notificator.subscribe(chat_id, future)
+    app.ask_data_middleware.subscribe(chat_id, future)
 
     return await future
 
 
 async def ask(text) -> types.Message:
+    # Fixme: need to stop event propagation message in AskDataMiddleware
     msg = message()
     return await ask_chat(msg.chat.id, text)

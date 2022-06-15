@@ -61,8 +61,8 @@ class AutoLoader:
             raise Exception(f'Can not find name {function_name}')
         return result[0]
 
-    def load_classes(self, path, recursively=False):
-        return self._module_object_type_filter(lambda obj: inspect.isclass(obj), path, recursively)
+    def load_classes(self, path, recursive=False):
+        return self._module_object_type_filter(lambda obj: inspect.isclass(obj), path, recursive)
 
     def load_class(self, path, class_name, recursive=False):
         result = list(filter(lambda item: item.__name__ == class_name, self.load_classes(path, recursive)))
