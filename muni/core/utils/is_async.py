@@ -1,7 +1,7 @@
-from typing import Callable, Union
+from typing import Callable
 from types import CoroutineType
 from asyncio import iscoroutinefunction
 
 
-def is_async(func: Union[Callable, CoroutineType]):
+def is_async(func: Callable | CoroutineType) -> bool:
     return iscoroutinefunction(func)

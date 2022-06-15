@@ -1,5 +1,3 @@
-from typing import Optional
-
 from aiogram.dispatcher.middlewares import BaseMiddleware
 from aiogram.types import Message
 from werkzeug.local import LocalStack, LocalProxy, release_local
@@ -14,12 +12,12 @@ def message() -> Message:
 
 
 class OpenContextMiddleware(BaseMiddleware):
-    async def on_process_message(self, msg: Message, data: dict):
+    async def on_process_message(self, msg: Message, _):
         _request.message = msg
 
 
 class CloseContextMiddleware(BaseMiddleware):
-    async def on_process_message(self, msg: Message, data: dict):
+    async def on_process_message(self, _, __):
         release_local(_request)
 
 

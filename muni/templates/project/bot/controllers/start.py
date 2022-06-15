@@ -1,4 +1,4 @@
-from muni.core import command, every, send_message, answer, config, SECOND
+from muni.core import command, every, send_message, answer, config
 
 
 @command
@@ -10,9 +10,3 @@ async def start():
 async def click():
     for admin in config().ADMINS:
         await send_message(admin, 'Hello, bot started')
-
-
-@every(SECOND)
-async def notify():
-    for admin in config().ADMINS:
-        await send_message(str(admin), 'Hello, bot started')

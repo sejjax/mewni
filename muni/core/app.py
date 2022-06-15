@@ -1,22 +1,22 @@
 import os
 from pathlib import Path
 
+import asyncio
 from aiogram.types import BotCommand
 from aiogram.contrib.middlewares.i18n import I18nMiddleware
-
-from .utils.singleton import singleton
 from aiogram import Dispatcher, Bot, executor
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+
+from .utils.singleton import singleton
 from .autoloader import AutoLoader
 from .utils.muni_meta import get_muni_meta, has_muni_meta
 from .types import MuniCallbackMeta, MuniScheduler, MuniCommand
 from .config import Config
-import asyncio
 from .schedulling import start_scheduling
 from .ctx import OpenContextMiddleware, CloseContextMiddleware
+from .ask_chat_notificator import AskChatNotificator
 
 
-# Entry point
 def generate_help(commands: list[MuniCallbackMeta]) -> str:
     help_ = '/help - Show helpful information\n'
     for command in reversed(commands):
@@ -34,6 +34,7 @@ class Muni:
     autoloader: AutoLoader
 
     i18n: I18nMiddleware
+    ask_chat_notificator: AskChatNotificator
 
     def __init__(self, skip_updates=False):
         self.skip_updates = skip_updates
@@ -45,15 +46,17 @@ class Muni:
         self.storage = MemoryStorage()
         self.dp = Dispatcher(self.bot, storage=self.storage)
 
+        self.ask_chat_notificator = AskChatNotificator(self.dp)
+
         self.dp.setup_middleware(OpenContextMiddleware())
 
         LOCALES_DIR = Path(os.getcwd()).joinpath('bot/locales')
         self.i18n = I18nMiddleware(self.config.BOT_NAME, LOCALES_DIR)
         self.dp.setup_middleware(self.i18n)
 
-        self.dp.setup_middleware(CloseContextMiddleware())
-
         self.register_controllers()
+        self.ask_chat_notificator.register_handler()
+        self.dp.setup_middleware(CloseContextMiddleware())
 
     def run(self):
         async def on_startup(_):
@@ -65,14 +68,11 @@ class Muni:
         app_config_module_path = 'bot/config/app.py'
         LoadedAppConfig = self.autoloader.load_class(app_config_module_path, 'AppConfig')
 
-        class AppConfig(LoadedAppConfig, Config):
-            pass
-
         working_dir = os.getcwd()
         relative_file_path = '.env'
         path_to_config_file = Path(working_dir).joinpath(relative_file_path)
 
-        self.config = AppConfig()
+        self.config = LoadedAppConfig()
         self.config.load_config(str(path_to_config_file))
 
     def set_commands(self, commands):
@@ -83,7 +83,7 @@ class Muni:
         asyncio.get_event_loop().run_until_complete(self.bot.set_my_commands(_commands))
 
     def register_controllers(self):
-        functions = self.autoloader.load_functions('bot/controllers', recursively=True)
+        functions = self.autoloader.load_functions('bot/controllers', recursive=True)
         commands = list(
             filter(lambda item: has_muni_meta(item) and isinstance(get_muni_meta(item).value, MuniCommand), functions))
         schedulers = list(
@@ -102,17 +102,17 @@ class Muni:
             schedule()
 
 
-def get_app():
+def get_app() -> Muni:
     return Muni()
 
 
-def get_config():
+def get_config() -> Config:
     return get_app().config
 
 
-def get_dp():
+def get_dp() -> Dispatcher:
     return get_app().dp
 
 
-def get_bot():
+def get_bot() -> Bot:
     return get_app().bot

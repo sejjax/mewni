@@ -1,18 +1,15 @@
 [tool.poetry]
-name = "muni"
-version = "0.1.4"
-description = "Telegram bot framework"
-authors = ["Danil Sokolov <danilzyx@gmail.com>"]
+name = "mybot"
+version = "0.1.0"
+description = "This is description for my bot"
+authors = ["My Name <example@example.com>"]
 
 [tool.poetry.dependencies]
 python = ">=3.9"
-click = "^8.1.3"
 aiogram = ">= 2.2.0"
 aioredis = ">= 2.0.1"
 environs = ">= 9.5.0"
 peewee = ">= 3.14.10"
-Werkzeug = "^2.1.2"
-aioschedule = "^0.5.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.4"

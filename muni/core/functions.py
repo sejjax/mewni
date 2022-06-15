@@ -1,9 +1,12 @@
 import typing
+from dataclasses import dataclass
 
 from aiogram.types import base
 from aiogram import types
+import asyncio
+from pyee import EventEmitter
 
-from .app import get_bot
+from .app import get_bot, get_app
 from .ctx import message
 
 
@@ -63,3 +66,19 @@ async def send_message(
         allow_sending_without_reply,
         reply_markup
     )
+
+
+async def ask_chat(chat_id, text) -> types.Message:
+    await send_message(chat_id, text)
+
+    future: asyncio.Future[types.Message] = asyncio.get_event_loop().create_future()
+
+    app = get_app()
+    app.ask_chat_notificator.subscribe(chat_id, future)
+
+    return await future
+
+
+async def ask(text) -> types.Message:
+    msg = message()
+    return await ask_chat(msg.chat.id, text)

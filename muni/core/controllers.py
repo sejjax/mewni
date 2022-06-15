@@ -1,19 +1,15 @@
-import inspect
-from enum import Enum
 from typing import Callable
-import aioschedule as schedule
-from dataclasses import dataclass
-from typing import Optional
+from enum import Enum
 from functools import wraps
+
+import aioschedule as schedule
+
 from .types import MuniCommand, MuniScheduler
 from .utils.muni_meta import set_muni_meta
-from .utils.isasync import is_async
+from .utils.is_async import is_async
 
 
-# make command
-
-
-def command(name: Optional[str] = None, description: Optional[str] = 'Placeholder description'):
+def command(name: str | None = None, description: str = 'Placeholder description'):
     def decorate(func: Callable):
         @wraps(func)
         async def wrapper(*args, **kwargs):
@@ -51,7 +47,7 @@ SUNDAY = (TimeType.DAY, 7)
 # @every(MONDAY, TUESDAY, at='10:20')
 # def send_notification():
 #   pass
-def every(*kwargs, at: Optional[str] = None):
+def every(*kwargs, at: str | None = None):
     def decorate(func: Callable):
         @wraps(func)
         def wrapper():

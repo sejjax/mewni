@@ -1,8 +1,10 @@
 import os
-import environs
-from .utils.get_class_fields import get_class_fields
-from typing import get_args
 from abc import ABCMeta
+from typing import get_args
+
+import environs
+
+from .utils.get_class_fields import get_class_fields
 
 
 class Config:
