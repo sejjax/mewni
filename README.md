@@ -6,7 +6,8 @@ Just run `pip3 install muni` to install package.
 Run `ni init superbot` to initialize new bot.
 
 ## Tasks
-- [ ] Implement method `ask()` which send to user request with question and return value which send user back
+- [x] Implement method `ask()` which send to user request with question and return value which send user back
+- [X] Implement `UserStore()`
 - [ ] Implement method `select(message: str, enum: Enum)` which send a message with selection and return option of enum and map selected option to value
 - [ ] Implement `LocalStorage()` with the same syntax `name, email, age = LocalStore()` which create storage for each user. For implementation need to use python AST.
 - [ ] Make architecture for this project

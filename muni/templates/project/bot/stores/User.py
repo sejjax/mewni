@@ -2,5 +2,5 @@ from muni.core.store import UserStore
 
 
 class User(UserStore):
-    nme: str
+    name: str
     age: int
