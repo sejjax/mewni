@@ -1,2 +1,3 @@
-from .core import config, bot, app, dp, Muni, message, answer, send_message, ask_chat, MuniScheduler, MuniOnStop, MuniOnStartup, \
-    MuniCommand, MuniCallbackMeta, MuniCallbackMetaTypes, command, every
+from .core import config, bot, app, dp, Muni, message, send, ask, ask_chat, command, every, UserStore
+
+__version__ = '0.1.6'

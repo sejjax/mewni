@@ -1,29 +1,47 @@
+from types import CoroutineType
 from typing import Callable
 from enum import Enum
 from functools import wraps
 
 import aioschedule as schedule
+from aiogram import Dispatcher
 
-from .types import MuniCommand, MuniScheduler
-from .utils.muni_meta import set_muni_meta
-from .utils.is_async import is_async
+from muni.utils.is_async import is_async
+from .controller import controller, Controller
+from muni.utils.prefix import remove_postfix, remove_prefix
 
 
-def command(name: str | None = None, description: str = 'Placeholder description'):
-    def decorate(func: Callable):
-        @wraps(func)
-        async def wrapper(*args, **kwargs):
-            if is_async(func):
-                await func()
-            else:
-                func()
+class Command(Controller):
+    name: str
+    description: str | None
 
-        set_muni_meta(wrapper, MuniCommand(name if name is str else func.__name__, description))
-        return wrapper
+    def __init__(self, handler: Callable | CoroutineType, name: str | None = None, description: str | None = None):
+        super().__init__(handler)
+        handler.__name__ = remove_postfix('(_+|_command)', handler.__name__)
+        handler.__name__ = remove_prefix('_+', handler.__name__)
+        self.name = handler.__name__ if name is None else name
+        self.description = description
 
-    if callable(name):
-        return decorate(name)
-    return decorate
+    def on_register(self, dispatcher: Dispatcher):
+        pass
+
+
+@controller(class_=Command)
+def command(name: str | None = None, description: str = 'placeholder description'): pass
+
+
+class OnStartup(Controller):
+    def on_register(self, dispatcher): pass
+
+@controller(class_=OnStartup)
+def startup(): pass
+
+
+class OnHalt(Controller):
+    def on_register(self): pass
+
+@controller(class_=OnHalt)
+def halt(): pass
 
 
 # WeekDay definition
@@ -83,7 +101,6 @@ def every(*kwargs, at: str | None = None):
             job = prepare_job.do(async_func)
             return job
 
-        set_muni_meta(wrapper, MuniScheduler())
         return wrapper
 
     return decorate

@@ -10,5 +10,4 @@ def singleton(class_: T) -> T:
         if not hasattr(class_, INSTANCE_ATTRIBUTE_NAME) or type(getattr(class_, INSTANCE_ATTRIBUTE_NAME)) != class_:
             setattr(class_, INSTANCE_ATTRIBUTE_NAME, class_(*args, **kwargs))
         return getattr(class_, INSTANCE_ATTRIBUTE_NAME)
-
     return getinstance

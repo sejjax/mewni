@@ -1,6 +1,6 @@
 from muni import Muni
 
-app = Muni(skip_updates=True)
+app = Muni()
 
 if __name__ == '__main__':
-    app.run()
+    app.run(skip_updates=True)

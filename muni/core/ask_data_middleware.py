@@ -3,7 +3,13 @@ from aiogram import Dispatcher
 from aiogram.dispatcher.middlewares import BaseMiddleware
 import asyncio
 
+
 class AskDataMiddleware(BaseMiddleware):
+    """
+    Needless middleware for working `ask()` function.
+    When `ask()` application is calling, function is subscribe to this middleware and wait for message from user.
+    When a message is caught then middleware give the function this message and remove it from subscribers.
+    """
     futures: dict = {}
     dp: Dispatcher
 

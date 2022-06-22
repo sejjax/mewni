@@ -1,6 +1,4 @@
-from muni.core.config import Config
-
-class AppConfig(Config):
+class EnvConfig:
     BOT_NAME: str
     BOT_TOKEN: str
     ADMINS: list[int]
@@ -12,3 +10,6 @@ class AppConfig(Config):
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: str
+
+
+config = EnvConfig

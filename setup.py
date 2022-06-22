@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='muni',
-    version='0.1.4',
+    version='0.1.6',
     packages=['muni'],
     install_requires=[
         'click >= 8.1.3',
