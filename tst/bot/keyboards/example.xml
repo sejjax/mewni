@@ -1,0 +1,6 @@
+<InlineKeyboard direction="column" width="3">
+    <Button>1</Button>
+    <Button>2</Button>
+    <Button>3</Button>
+    <Button>4</Button>
+</InlineKeyboard>
