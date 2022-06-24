@@ -1,13 +1,13 @@
 from typing import Callable
-from muni.utils.make_async import wrap_async
+from mewni.utils.make_async import wrap_async
 from abc import ABCMeta, abstractmethod
 from types import CoroutineType
 from typing import Type
-from .muni_object import MuniObject
+from .mewni_object import MewniObject
 from aiogram import Dispatcher
 
 
-class Controller(MuniObject):
+class Controller(MewniObject):
     __metaclass__ = ABCMeta
     handler: CoroutineType
 

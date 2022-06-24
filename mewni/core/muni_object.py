@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABCMeta
 
 
-class MuniObject:
+class MewniObject:
     __meta_class_ = ABCMeta
 
     @abstractmethod

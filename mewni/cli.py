@@ -1,3 +1,4 @@
+#  This is core cli file. You can call it using "ni" or "mewni" commands
 import os
 
 import click
@@ -29,7 +30,7 @@ def write_render_template(template_path: str, out_path: str) -> str:
 
     print(f'{template_path} {out_path}')
     env = jinja2.Environment(
-        loader=jinja2.PackageLoader('muni'),
+        loader=jinja2.PackageLoader('mewni'),
         autoescape=jinja2.select_autoescape()
     )
     template = env.get_template(template_path)
@@ -62,7 +63,7 @@ def write_render(relative_template_path: str, relative_out_path: str):
         get_absolute_out_path(relative_out_path)
     )
 
-#  Using: muni create <model|controller|filter|store|template> <name>
+#  Using: mewni create <model|controller|filter|store|template> <name>
 @cli.command()
 @click.argument('object_type')
 @click.argument('generated_file')

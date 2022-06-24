@@ -1,4 +1,4 @@
-from muni.core.store import UserStore
+from mewni.core.store import UserStore
 
 
 class User(UserStore):

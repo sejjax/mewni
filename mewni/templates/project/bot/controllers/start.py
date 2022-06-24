@@ -1,4 +1,4 @@
-from muni.core import command, send, config, startup, ask
+from mewni.core import command, send, config, startup, ask
 from bot.stores import User
 
 @startup

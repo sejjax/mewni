@@ -1,7 +1,7 @@
 import abc
 from abc import ABCMeta
 from .ctx import message
-from muni.utils.get_class_fields import get_class_fields, ClassField
+from mewni.utils.get_class_fields import get_class_fields, ClassField
 
 class Storage:
     """

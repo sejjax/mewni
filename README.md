@@ -1,13 +1,15 @@
-# Muni is the python telegram bot framework 
+# Mewni is the python telegram bot framework 
 
 ## Установка
-Напишите `pip3 install muni` для установки.
+Поддерживаемая версия - `Python 3.10` и выше
+
+Напишите `pip3 install git+https://github.com/sejjax/mewni.git` для установки пакета.
 
 Напишите `ni init superbot` для инициализации проекта.
 
 ## Проект
 ### Конфигурация
-`bot/config/app.py` Файл для описния переменных среды. 
+`bot/config/env.py` Файл для описния переменных среды. 
 
 ```python
 class EnvConfig:
@@ -37,7 +39,7 @@ APPHOST: str = 'localhost'
 Все контроллеры подгружаются и регистрируются автоматически при инициализации приложения.
 
 ```python
-from muni import command, send
+from mewni import command, send
 from bot.config import config
 
 
@@ -57,7 +59,7 @@ def rename_me(): pass
 ### Получение данных от пользователя 
 Для получения данных и текста введеного пользователем, вызовите функцию `message()`
 ```python
-from muni import command, message
+from mewni import command, message
 
 @command
 async def start():
@@ -68,7 +70,7 @@ async def start():
 `ask()` Отсылает сообщение с просьбой ввести информацию и возвращает обьект сообщения с этой информацией.
 
 ```python
-from muni import command, ask, send
+from mewni import command, ask, send
 
 
 @command
@@ -93,7 +95,7 @@ async def start():
 Для сохранения данных введенных пользователем между вызовами разных обработчиков, нужно использовать `UserStore`
 ```python
 # bot/stores/user.py
-from muni import UserStore
+from mewni import UserStore
 
 class User(UserStore):
     # 'Петр' и 10 - это значение по умолчанию 
@@ -102,20 +104,21 @@ class User(UserStore):
 ```
 ```python
 # bot/controllers/start.py
-from muni import ask, command
+from mewni import ask, command
 from bot.stores.User import User
 
 @command
 async def start():
     name = await ask('Введите ваше имя')
     age = await ask('Введите ваш возраст')
-    
-    User.name = name.text, 
-    User.age = int(age.text)
+    user = User()
+    user.name = name.text, 
+    user.age = int(age.text)
 
 @command
 async def info():
-    send(f'Привет {User.name}, которому {User.age} лет')
+    user = User()
+    await send(f'Привет {user.name}, которому {user.age} лет')
 ```
 Здесь класс `User` - сохраняет данные не глобально для всех пользователей, а локально именно для этого пользователя в хранилеще по `id` его чата в `Storage`. По умолчанию используется `MemoryStorage`, но потом мы добавим `RedistStorage`, `MongoStorage` и `FileStorage`
 
@@ -152,25 +155,25 @@ async def info():
 - [ ] Implement `setcommand()` function for showing commands at list
 - [ ] Schedulling with localization
 - [ ] Add logging with structuring for years, month and days
-- [ ] Buy website for muni project
+- [ ] Buy website for mewni project
 - [ ] Make additional cli commands:
   - [ ] `generate` - generate something project items
   - [ ] `start` - start server
   - [ ] `dev` - start server with auto reloading
   - [ ] `build` - compile all project to one .pyc file
-  - [ ] `deploy` - deploy bot to muni server
-  - [ ] `auth` - authorize for muni server for deploy
+  - [ ] `deploy` - deploy bot to mewni server
+  - [ ] `auth` - authorize for mewni server for deploy
 - [ ] Implement plugins:
   - [ ] Role plugin
   - [ ] Admin plugin
   - [ ] Analytic plugin
   - [ ] Payment plugin
 - [ ] Add notification about startup and stopping for bot admins
-- [ ] Detach Muni from specific service (Telegram) and make it universe:
+- [ ] Detach Mewni from specific service (Telegram) and make it universe:
   - [ ] Telegram
   - [ ] WhatsApp
   - [ ] Discord
   - [ ] Github
   - [ ] Twitter and others social networks
-- [ ] Draw logotype for Muni project
+- [ ] Draw logotype for Mewni project
 - [ ] Add choosing between requirements.txt and pyproject.toml files (poetry and pip options) 

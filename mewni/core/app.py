@@ -1,4 +1,5 @@
-from muni.utils.singleton import singleton
+#  This is Entry point to all framework. In this file going on
+from mewni.utils.singleton import singleton
 from .register import Register
 from .bot import Bot
 from aiogram import Dispatcher
@@ -8,7 +9,7 @@ from .db import connect_db, DBType
 
 
 @singleton
-class Muni:
+class Mewni:
     """
     Application entry point.
     """
@@ -42,12 +43,12 @@ class Muni:
         self.bot.startup(skip_updates)
 
 
-def get_app() -> Muni:
+def get_app() -> Mewni:
     """
     Return main instance of application. If it's not there then create and return it
     :return: application instance
     """
-    return Muni()
+    return Mewni()
 
 
 def get_dp() -> Dispatcher:

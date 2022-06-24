@@ -2,7 +2,7 @@ import os
 from typing import get_args, TypeVar
 import environs
 
-from muni.utils.get_class_fields import get_class_fields
+from mewni.utils.get_class_fields import get_class_fields
 
 T = TypeVar('T')
 

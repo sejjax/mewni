@@ -1,4 +1,4 @@
-from .app import get_app as app, get_dp as dp, get_bot as bot, get_config as config, Muni
+from .app import get_app as app, get_dp as dp, get_bot as bot, get_config as config, Mewni
 from .ctx import message
 from .functions import send, ask_chat, ask
 from .controllers import command, startup, halt, every, SECOND

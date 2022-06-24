@@ -1,4 +1,4 @@
-from muni import *
+from mewni import *
 
 class {{ name }}(Model):
     pass

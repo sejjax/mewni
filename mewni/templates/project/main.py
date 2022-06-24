@@ -1,6 +1,6 @@
-from muni import Muni
+from mewni import Mewni
 
-app = Muni()
+app = Mewni()
 
 if __name__ == '__main__':
     app.run(skip_updates=True)

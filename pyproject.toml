@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "muni"
+name = "mewni"
 version = "0.1.6"
 description = "Telegram bot framework"
 authors = ["Danil Sokolov <danilzyx@gmail.com>"]

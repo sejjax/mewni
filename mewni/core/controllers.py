@@ -6,9 +6,9 @@ from functools import wraps
 import aioschedule as schedule
 from aiogram import Dispatcher
 
-from muni.utils.is_async import is_async
+from mewni.utils.is_async import is_async
 from .controller import controller, Controller
-from muni.utils.prefix import remove_postfix, remove_prefix
+from mewni.utils.prefix import remove_postfix, remove_prefix
 
 
 class Command(Controller):

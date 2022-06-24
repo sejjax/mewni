@@ -1,9 +1,9 @@
 from setuptools import setup
 
 setup(
-    name='muni',
+    name='mewni',
     version='0.1.6',
-    packages=['muni'],
+    packages=['mewni'],
     install_requires=[
         'click >= 8.1.3',
         'aiogram >= 2.2.0',
@@ -15,7 +15,7 @@ setup(
     ],
     scripts=[
         'bin/ni',
-        'bin/muni'
+        'bin/mewni'
     ],
     include_package_data=True
 )
