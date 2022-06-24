@@ -1,14 +1,12 @@
-import asyncio
-
-from aiogram import Dispatcher
 from typing import Type
 from .controllers import Controller, Command, OnStartup
 from .store import UserStore, Storage
-from .config import load_config
 from .loader import Loader
-from aiogram.dispatcher.middlewares import BaseMiddleware
 from .ctx import OpenContextMiddleware, CloseContextMiddleware
 from .ask_data_middleware import AskDataMiddleware
+from .model import inverse_relations
+from .db import inject_db
+from peewee import Database
 
 
 class Register:
@@ -54,6 +52,13 @@ class Register:
             # FIXME: fix private variable assignment
             store._storage = storage
             self.user_stores.append(store)
+
+    def register_models(self, db: Database):
+        models = self.loader.load_models('bot/models')
+        inverse_relations(models)
+        for model in models:
+            inject_db(db, model)
+
 
     def register_config(self):
         return self.loader.load_config('bot/config/env.py', 'EnvConfig', '.env')

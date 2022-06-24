@@ -1,1 +1,0 @@
-import aiogram_dialog.widgets.text

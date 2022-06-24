@@ -14,11 +14,6 @@ class Controller(MuniObject):
     def __init__(self, handler: Callable | CoroutineType, *args, **kwargs):
         self.handler = wrap_async(handler)
 
-    @abstractmethod
-    def on_register(self, dispatcher: Dispatcher):
-        """Calling when an controller will be registered"""
-        pass
-
 
 def controller(class_: Type[Controller], require_parentheses: bool | None | Callable = None):
     def decorate(fn: Callable[[...], any]):

@@ -1,6 +1,3 @@
-import typing
-
-from aiogram.types import base
 from ..utils import fmt
 from aiogram import types
 import asyncio

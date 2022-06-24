@@ -22,23 +22,18 @@ class Command(Controller):
         self.name = handler.__name__ if name is None else name
         self.description = description
 
-    def on_register(self, dispatcher: Dispatcher):
-        pass
-
 
 @controller(class_=Command)
 def command(name: str | None = None, description: str = 'placeholder description'): pass
 
 
-class OnStartup(Controller):
-    def on_register(self, dispatcher): pass
+class OnStartup(Controller): pass
 
 @controller(class_=OnStartup)
 def startup(): pass
 
 
-class OnHalt(Controller):
-    def on_register(self): pass
+class OnHalt(Controller): pass
 
 @controller(class_=OnHalt)
 def halt(): pass

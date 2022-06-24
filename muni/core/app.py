@@ -3,6 +3,8 @@ from .register import Register
 from .bot import Bot
 from aiogram import Dispatcher
 from .store import MemoryStorage
+from peewee import Database
+from .db import connect_db, DBType
 
 
 @singleton
@@ -12,6 +14,7 @@ class Muni:
     """
     bot: Bot
     register: Register
+    db: Database
     config: any
 
     def __init__(self):
@@ -24,6 +27,16 @@ class Muni:
         self.register.register_controllers(self.bot.dp)
         self.register.register_middlewares(self.bot.dp)
         self.bot.startup_callback = self.register.on_startup
+        self.db = connect_db(
+            self.config.DB_TYPE,
+            self.config.DB_PATH,
+            self.config.DB_NAME,
+            self.config.DB_USER,
+            self.config.DB_PASSWORD,
+            self.config.DB_HOST,
+            self.config.DB_PORT
+        )
+        self.register.register_models(self.db)
 
     def run(self, skip_updates: bool = False):
         self.bot.startup(skip_updates)
