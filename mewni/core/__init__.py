@@ -4,3 +4,4 @@ from .functions import send, ask_chat, ask
 from .controllers import command, startup, halt, every, SECOND
 from .store import Storage, MemoryStorage, UserStore
 from .config import load_config
+from .model import Model, RelationField, EnumField, inverse_relations

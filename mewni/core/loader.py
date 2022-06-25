@@ -34,7 +34,7 @@ class Loader:
         EnvConfig = self.autoloader.load_class(path, config_class_name)
         working_dir = os.getcwd()
         path_to_config_file = Path(working_dir).joinpath(dot_env_file_name)
-
+        print(path_to_config_file)
         config = load_config(EnvConfig, str(path_to_config_file))
         return config
 

@@ -22,8 +22,8 @@ class Register:
     def __init__(self):
         self.loader = Loader()
 
-    def register_controllers(self, dispatcher):
-        self.controllers = self.loader.load_controllers('bot/controllers')
+    def register_controllers(self, path: str, dispatcher):
+        self.controllers = self.loader.load_controllers(path)
         for controller in self.controllers:
             if controller.__class__ == Command:
                 controller: Command
@@ -45,20 +45,20 @@ class Register:
         for middleware in MIDDLEWARES:
             dispatcher.setup_middleware(middleware)
 
-    def register_user_stores(self, storage: Storage):
-        user_stores = self.loader.load_user_stores('bot/stores')
+    def register_user_stores(self, path: str, storage: Storage):
+        user_stores = self.loader.load_user_stores(path)
         for user_store in user_stores:
             store = user_store()
             # FIXME: fix private variable assignment
             store._storage = storage
             self.user_stores.append(store)
 
-    def register_models(self, db: Database):
-        models = self.loader.load_models('bot/models')
+    def register_models(self, path: str, db: Database):
+        models = self.loader.load_models(path)
         inverse_relations(models)
         for model in models:
             inject_db(db, model)
+        return models
 
-
-    def register_config(self):
-        return self.loader.load_config('bot/config/env.py', 'EnvConfig', '.env')
+    def register_config(self, path: str):
+        return self.loader.load_config(path, 'EnvConfig', '.env')

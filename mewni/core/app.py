@@ -20,16 +20,16 @@ class Mewni:
 
     def __init__(self):
         self.register = Register()
-        self.config = self.register.register_config()
+        self.config = self.register.register_config('bot/config/env.py')
 
         self.bot = Bot(self.config.BOT_TOKEN)
 
-        self.register.register_user_stores(MemoryStorage())
-        self.register.register_controllers(self.bot.dp)
+        self.register.register_user_stores('bot/stores', MemoryStorage())
+        self.register.register_controllers('bot/controllers', self.bot.dp)
         self.register.register_middlewares(self.bot.dp)
         self.bot.startup_callback = self.register.on_startup
         self.db = connect_db(
-            self.config.DB_TYPE,
+            DBType(self.config.DB_TYPE),
             self.config.DB_PATH,
             self.config.DB_NAME,
             self.config.DB_USER,
@@ -37,7 +37,8 @@ class Mewni:
             self.config.DB_HOST,
             self.config.DB_PORT
         )
-        self.register.register_models(self.db)
+        models = self.register.register_models('bot/models', self.db)
+
 
     def run(self, skip_updates: bool = False):
         self.bot.startup(skip_updates)
