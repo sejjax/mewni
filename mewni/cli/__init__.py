@@ -1,4 +1,4 @@
-from cli import main
+from .cli import main
 from mewni.tests.workspace import prepare
 
 
