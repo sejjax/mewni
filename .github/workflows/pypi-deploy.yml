@@ -1,0 +1,15 @@
+name: PYPI Package Deploy
+on:
+  push:
+    branches:
+      - master
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Testing
+        run: poetry run pytest
+      - name: Building
+        run: poetry build
+      - name: Publishing to PYPI
+        run: poetry publish --user sejjax --password ${{ secrets.PYPI_PASSWORD }}
