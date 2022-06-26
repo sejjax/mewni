@@ -12,7 +12,7 @@ def generate_artifacts(object_type, generated_file):
 
         print(f'{template_path} {out_path}')
         env = jinja2.Environment(
-            loader=jinja2.PackageLoader('mewni'),
+            loader=jinja2.PackageLoader('mewni.py'),
             autoescape=jinja2.select_autoescape()
         )
         template = env.get_template(template_path)
