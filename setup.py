@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='mewni',
-    version='0.1.6',
+    version='0.1.7',
     packages=['mewni'],
     install_requires=[
         'click >= 8.1.3',
