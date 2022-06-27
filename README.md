@@ -180,4 +180,4 @@ async def info():
   - [ ] Github
   - [ ] Twitter and others social networks
 - [ ] Draw logotype for Mewni project
-- [ ] Add choosing between requirements.txt and pyproject.toml files (poetry and pip options) 
+- [ ] Add choosing between requirements.txt and pyproject.toml files (poetry and pip options).
