@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "mybot"
+version = "0.1.0"
+description = "This is description for my bot"
+authors = ["My Name <example@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+aiogram = ">= 2.2.0"
+aioredis = ">= 2.0.1"
+environs = ">= 9.5.0"
+peewee = ">= 3.14.10"
+
+[tool.poetry.dev-dependencies]
+pytest = "^3.4"
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"

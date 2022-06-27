@@ -19,6 +19,7 @@ classifiers = [
     "Topic :: Software Development :: Libraries :: Application Frameworks",
     "Topic :: Internet"
 ]
+include = ["mewni/templates/project/.env"]
 
 [tool.poetry.urls]
 "Bug Tracker" = "https://github.com/sejjax/mewni/issues"

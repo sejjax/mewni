@@ -1,0 +1,11 @@
+<InlineKeyboard direction="column" width="3" if="{True}">
+    <Button>1</Button>
+    <Button>2</Button>
+    <Button>3</Button>
+    <Button>4</Button>
+    <Button iter="for i in [1, 2, 3, 4, 5]">
+        <Fragment if="{i % 2 == 0}">{i}</Fragment>
+        <Fragment else="">{i}</Fragment>
+        Click on me
+    </Button>
+</InlineKeyboard>

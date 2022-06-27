@@ -1,0 +1,22 @@
+<Main>
+    <Message>
+        <Text>
+            This is something text for me
+        </Text>
+        <Keyboard>
+            <Button if="{is_good}">
+                Ok
+            </Button>
+            <Button else="">
+                Block
+            </Button>
+            <CheckBox>
+
+            </CheckBox>
+        </Keyboard>
+    </Message>
+    <Template name="CheckBox" args="{checked}">
+        { "On" ? checked : "Off" }
+        <Slot/>
+    </Template>
+</Main>
