@@ -15,6 +15,8 @@ jobs:
       - name: Testing
         run: poetry run pytest
       - name: Building
-        run: poetry build
+        working-directory: ./
+        run: ls && poetry build
       - name: Publishing to PYPI
+        working-directory: ./
         run: poetry publish --user sejjax --password ${{ secrets.PYPI_PASSWORD }}
